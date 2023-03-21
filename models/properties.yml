@@ -1,0 +1,139 @@
+version: 2
+models:
+  - name: UnicommerceCourierReturnItemwise
+    description: This table provides courier details for a reverse pick-up (CIR) for a returned order item in Uniware.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['SaleOrderNo','SaleOrderItem']
+        partition_by : { 'field': 'ReturnDate', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['SaleOrderNo']
+
+  - name: UnicommerceGatepass
+    description: This table lists all the Gatepass details . A Gatepass is a simple document containing the detail of items while making any product movement outside the warehouse.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['GatepassCode','ItemSkuCode']   
+        partition_by : { 'field': 'GatepassCreatedAt', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['GatepassCode']
+
+  - name: UnicommerceGRN
+    description: This table lists all the issued GRN with item details for a vendor compared to Purchase Order.A GRN (Goods Received Note) is a record used to confirm all goods have been received.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['GRNCode','ItemSkuCode']
+        partition_by : { 'field': 'GRNDate', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['GRNCode']
+
+  - name: UnicommerceInventory
+    description: This table provides overview of inventory distribution of SKU(s) in the warehouse.
+    config: 
+        materialized : incremental 
+        incremental_strategy : merge 
+        unique_key : ['Facility','ItemSkuCode']
+        partition_by : { 'field': 'updated', 'data_type': dbt.type_timestamp(), 'granularity' : day }
+        cluster_by : ['ItemSkuCode']
+
+  - name: UnicommerceInvoice
+    description: This table contains a list of invoices generated with detailed invoice sections and shipping code based on order number.
+    config: 
+        materialized : incremental 
+        incremental_strategy : merge 
+        unique_key : ['OrderNo','SKUCode','_seq_id']
+        partition_by : { 'field': 'InvoiceCreatedDate', 'data_type': dbt.type_timestamp(), 'granularity' : day }
+        cluster_by : ['OrderNo']
+
+  - name: UnicommerceItemMaster
+    description: The list of products or items existing within Uniware. It defines the product SKU code (which is unique for each item), its name, the product category it belongs to and the tax associated  
+    config : 
+        materialized : incremental
+        incremental_strategy : merge 
+        unique_key : ['ProductCode','ComponentProductCode']
+        partition_by : { 'field': 'updated', 'data_type': dbt.type_timestamp(), 'granularity' : day }
+        cluster_by : ['ProductCode']
+
+
+  - name: UnicommercePurchaseOrders
+    description: This Table provides information about Purchase orders with prices and order status
+    config :
+        materialized : incremental
+        incremental_strategy : merge
+        unique_key : ['ItemSkuCode']
+        partition_by : { 'field': 'Updated', 'data_type': dbt.type_timestamp(), 'granularity' : day }
+        cluster_by : ['ItemSkuCode']
+
+  - name: UnicommercePutaway
+    description:  This table provides putaway item details based on Inventory Shelf code.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge
+        unique_key : ['PutawayItemId','ItemTypeskuCode'] 
+        partition_by : { 'field': 'created', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['PutawayItemId']
+
+  - name: UnicommerceReturnInvoice
+    description: This table lists all the return invioces genrated with the shipping details based on item sku code.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['InvoiceCode','ItemSKUCode']
+        partition_by : { 'field': 'ReturnDate', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['InvoiceCode']
+
+
+  - name: UnicommerceReversePickup
+    description: This table provides reverse pickup details with sale order item code and putaway details if applicable.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['ItemSKUCode','ReversePickupNo']
+        partition_by : { 'field': 'ReversePickupCreated', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['ItemSKUCode']
+
+  - name: UnicommerceSaleOrders
+    description: A list of sale orders issued to customers. It confirms the sale of goods or services and details the sale’s specifics, including the quantity, pricing, and quality of goods or services provided
+    config :
+        materialized : incremental
+        incremental_strategy : merge
+        unique_key : ['SaleOrderItemCode','DisplayOrderCode']
+        partition_by : { 'field': 'order_date', 'data_type': dbt.type_timestamp(), 'granularity' : day }
+        cluster_by : ['ItemSKUCode']
+
+  - name: UnicommerceShelfwiseInventory
+    description: This table provides complete overview of inventory distribution of a SKU in a facility and inventory overview of SKU(s)) based on shelf.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['ItemTypeSKUCode','Shelf']
+        cluster_by : ['Shelf']
+
+
+  - name: UnicommerceShippingPackage
+    description: This table provides all the shipping details with tracker and provider.
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['ShippingPackageNo']
+        partition_by : { 'field': 'Created', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['ShippingPackageNo']
+
+  - name: UnicommerceVendorItemMaster
+    description: This table provides list of products or items existing within Uniware based on the vendor Sku code
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['VendorSkuCode','VendorCode','ProductCode']
+        partition_by : { 'field': 'Updated', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['VendorCode']
+
+  - name: UnicommerceVendors
+    description: This table provides list of all associated vendors and details about their accounts like gst number and contact details
+    config: 
+        materialized : incremental  
+        incremental_strategy : merge 
+        unique_key : ['VendorCode']
+        partition_by : { 'field': 'Updated', 'data_type': dbt.type_timestamp() }
+        cluster_by : ['VendorCode']
+
