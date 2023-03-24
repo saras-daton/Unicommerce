@@ -1,5 +1,5 @@
 
-{% if var('uc_purchaseorders') %}
+{% if var('UnicommercePurchaseOrders') %}
 {{ config( enabled = True ) }}
 {% else %}
 {{ config( enabled = False ) }}

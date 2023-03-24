@@ -1,5 +1,5 @@
 
-{% if var('uc_itemmaster') %}
+{% if var('UnicommerceItemMaster') %}
     {{ config( enabled = True ) }}
 {% else %}
     {{ config( enabled = False ) }}
