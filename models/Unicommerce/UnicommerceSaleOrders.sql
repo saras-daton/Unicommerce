@@ -3,6 +3,7 @@
 {% else %}
 {{ config( enabled = False ) }}
 {% endif %}
+
 {% if var('currency_conversion_flag') %}
 --depends_on: {{ ref('ExchangeRates') }}
 {% endif %}
@@ -177,8 +178,8 @@
                 case when c.value is null then 1 else c.value end as exchange_currency_rate,
                 case when c.from_currency_code is null then a.Currency else c.from_currency_code end as exchange_currency_code,
             {% else %}
-                    cast(1 as decimal) as exchange_currency_rate,
-                    a.Currency as exchange_currency_code, 
+                cast(1 as decimal) as exchange_currency_rate,
+                a.Currency as exchange_currency_code, 
             {% endif %}
             a.{{daton_user_id()}} as _daton_user_id,
             a.{{daton_batch_runtime()}} as _daton_batch_runtime,
