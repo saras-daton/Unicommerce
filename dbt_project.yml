@@ -25,7 +25,7 @@ vars:
   UnicommerceInventory : True
   UnicommerceItemMaster : True
   UnicommercePurchaseOrders : True
-  UnicommerceSaleorders : True
+  UnicommerceSaleOrders : True
   UnicommerceInvoice : True
   UnicommercePutaway : True
   UnicommerceReturnInvoice : True
