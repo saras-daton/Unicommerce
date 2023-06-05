@@ -13,6 +13,14 @@ models:
           combination_of_columns:
             - SaleOrderNo
             - SaleOrderItem
+    columns:
+      - name: ReturnDate
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
+
+            
             
 
   - name: UnicommerceGatepass
@@ -28,6 +36,12 @@ models:
           combination_of_columns:
             - GatepassCode
             - ItemSkuCode
+    columns:
+      - name: GatepassCreatedAt
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceGRN
     description: This table lists all the issued GRN with item details for a vendor compared to Purchase Order.A GRN (Goods Received Note) is a record used to confirm all goods have been received.
@@ -42,6 +56,12 @@ models:
           combination_of_columns:
             - GRNCode
             - ItemSkuCode
+    columns:
+      - name: GRNDate
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceInventory
     description: This table provides overview of inventory distribution of SKU(s) in the warehouse.
@@ -56,6 +76,12 @@ models:
           combination_of_columns:
             - Facility
             - ItemSkuCode
+    columns:
+      - name: Updated
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceInvoice
     description: This table contains a list of invoices generated with detailed invoice sections and shipping code based on order number.
@@ -71,6 +97,12 @@ models:
             - OrderNo
             - SKUCode
             - _seq_id
+    columns:
+      - name: InvoiceCreatedDate
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceItemMaster
     description: The list of products or items existing within Uniware. It defines the product SKU code (which is unique for each item), its name, the product category it belongs to and the tax associated  
@@ -85,6 +117,12 @@ models:
           combination_of_columns:
             - ProductCode
             - ComponentProductCode
+    columns:
+      - name: Updated
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
 
   - name: UnicommercePurchaseOrders
@@ -99,6 +137,12 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - ItemSkuCode
+    columns:
+      - name: Updated
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommercePutaway
     description:  This table provides putaway item details based on Inventory Shelf code.
@@ -113,6 +157,12 @@ models:
           combination_of_columns:
             - PutawayItemId
             - ItemTypeskuCode
+      columns:
+      - name: Created
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceReturnInvoice
     description: This table lists all the return invioces genrated with the shipping details based on item sku code.
@@ -127,6 +177,12 @@ models:
           combination_of_columns:
             - InvoiceCode
             - ItemSKUCode
+    columns:
+      - name: ReturnDate
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
 
   - name: UnicommerceReversePickup
@@ -142,6 +198,12 @@ models:
           combination_of_columns:
             - ItemSKUCode
             - ReversePickupNo 
+    columns:
+      - name: ReversePickupCreated
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceSaleOrders
     description: A list of sale orders issued to customers. It confirms the sale of goods or services and details the sale’s specifics, including the quantity, pricing, and quality of goods or services provided
@@ -156,6 +218,12 @@ models:
           combination_of_columns:
             - SaleOrderItemCode
             - DisplayOrderCode 
+    columns:
+      - name: order_date
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceShelfwiseInventory
     description: This table provides complete overview of inventory distribution of a SKU in a facility and inventory overview of SKU(s)) based on shelf.
@@ -183,6 +251,12 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - ShippingPackageNo
+    columns:
+      - name: Created
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceVendorItemMaster
     description: This table provides list of products or items existing within Uniware based on the vendor Sku code
@@ -198,6 +272,12 @@ models:
             - VendorSkuCode
             - VendorCode
             - ProductCode
+    columns:
+      - name: Updated
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
   - name: UnicommerceVendors
     description: This table provides list of all associated vendors and details about their accounts like gst number and contact details
@@ -211,4 +291,10 @@ models:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
             - VendorCode
+    columns:
+      - name: Updated
+        tests:
+          - dbt_expectations.expect_row_values_to_have_recent_data:
+              datepart: day
+              interval: 1
 
