@@ -8,6 +8,12 @@ models:
         unique_key : ['SaleOrderNo','SaleOrderItem']
         partition_by : { 'field': 'ReturnDate', 'data_type': dbt.type_timestamp() }
         cluster_by : ['SaleOrderNo']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - SaleOrderNo
+            - SaleOrderItem
+            
 
   - name: UnicommerceGatepass
     description: This table lists all the Gatepass details . A Gatepass is a simple document containing the detail of items while making any product movement outside the warehouse.
@@ -17,6 +23,11 @@ models:
         unique_key : ['GatepassCode','ItemSkuCode']   
         partition_by : { 'field': 'GatepassCreatedAt', 'data_type': dbt.type_timestamp() }
         cluster_by : ['GatepassCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - GatepassCode
+            - ItemSkuCode
 
   - name: UnicommerceGRN
     description: This table lists all the issued GRN with item details for a vendor compared to Purchase Order.A GRN (Goods Received Note) is a record used to confirm all goods have been received.
@@ -26,6 +37,11 @@ models:
         unique_key : ['GRNCode','ItemSkuCode']
         partition_by : { 'field': 'GRNDate', 'data_type': dbt.type_timestamp() }
         cluster_by : ['GRNCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - GRNCode
+            - ItemSkuCode
 
   - name: UnicommerceInventory
     description: This table provides overview of inventory distribution of SKU(s) in the warehouse.
@@ -35,6 +51,11 @@ models:
         unique_key : ['Facility','ItemSkuCode']
         partition_by : { 'field': 'updated', 'data_type': dbt.type_timestamp(), 'granularity' : day }
         cluster_by : ['ItemSkuCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - Facility
+            - ItemSkuCode
 
   - name: UnicommerceInvoice
     description: This table contains a list of invoices generated with detailed invoice sections and shipping code based on order number.
@@ -44,6 +65,12 @@ models:
         unique_key : ['OrderNo','SKUCode','_seq_id']
         partition_by : { 'field': 'InvoiceCreatedDate', 'data_type': dbt.type_timestamp(), 'granularity' : day }
         cluster_by : ['OrderNo']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - OrderNo
+            - SKUCode
+            - _seq_id
 
   - name: UnicommerceItemMaster
     description: The list of products or items existing within Uniware. It defines the product SKU code (which is unique for each item), its name, the product category it belongs to and the tax associated  
@@ -53,6 +80,11 @@ models:
         unique_key : ['ProductCode','ComponentProductCode']
         partition_by : { 'field': 'updated', 'data_type': dbt.type_timestamp(), 'granularity' : day }
         cluster_by : ['ProductCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ProductCode
+            - ComponentProductCode
 
 
   - name: UnicommercePurchaseOrders
@@ -63,6 +95,10 @@ models:
         unique_key : ['ItemSkuCode']
         partition_by : { 'field': 'Updated', 'data_type': dbt.type_timestamp(), 'granularity' : day }
         cluster_by : ['ItemSkuCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ItemSkuCode
 
   - name: UnicommercePutaway
     description:  This table provides putaway item details based on Inventory Shelf code.
@@ -72,6 +108,11 @@ models:
         unique_key : ['PutawayItemId','ItemTypeskuCode'] 
         partition_by : { 'field': 'created', 'data_type': dbt.type_timestamp() }
         cluster_by : ['PutawayItemId']
+      tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - PutawayItemId
+            - ItemTypeskuCode
 
   - name: UnicommerceReturnInvoice
     description: This table lists all the return invioces genrated with the shipping details based on item sku code.
@@ -81,6 +122,11 @@ models:
         unique_key : ['InvoiceCode','ItemSKUCode']
         partition_by : { 'field': 'ReturnDate', 'data_type': dbt.type_timestamp() }
         cluster_by : ['InvoiceCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - InvoiceCode
+            - ItemSKUCode
 
 
   - name: UnicommerceReversePickup
@@ -91,6 +137,11 @@ models:
         unique_key : ['ItemSKUCode','ReversePickupNo']
         partition_by : { 'field': 'ReversePickupCreated', 'data_type': dbt.type_timestamp() }
         cluster_by : ['ItemSKUCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ItemSKUCode
+            - ReversePickupNo 
 
   - name: UnicommerceSaleOrders
     description: A list of sale orders issued to customers. It confirms the sale of goods or services and details the sale’s specifics, including the quantity, pricing, and quality of goods or services provided
@@ -100,6 +151,11 @@ models:
         unique_key : ['SaleOrderItemCode','DisplayOrderCode']
         partition_by : { 'field': 'order_date', 'data_type': dbt.type_timestamp(), 'granularity' : day }
         cluster_by : ['ItemSKUCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - SaleOrderItemCode
+            - DisplayOrderCode 
 
   - name: UnicommerceShelfwiseInventory
     description: This table provides complete overview of inventory distribution of a SKU in a facility and inventory overview of SKU(s)) based on shelf.
@@ -108,6 +164,11 @@ models:
         incremental_strategy : merge 
         unique_key : ['ItemTypeSKUCode','Shelf']
         cluster_by : ['Shelf']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ItemTypeSKUCode
+            - Shelf 
 
 
   - name: UnicommerceShippingPackage
@@ -118,6 +179,10 @@ models:
         unique_key : ['ShippingPackageNo']
         partition_by : { 'field': 'Created', 'data_type': dbt.type_timestamp() }
         cluster_by : ['ShippingPackageNo']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - ShippingPackageNo
 
   - name: UnicommerceVendorItemMaster
     description: This table provides list of products or items existing within Uniware based on the vendor Sku code
@@ -127,6 +192,12 @@ models:
         unique_key : ['VendorSkuCode','VendorCode','ProductCode']
         partition_by : { 'field': 'Updated', 'data_type': dbt.type_timestamp() }
         cluster_by : ['VendorCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - VendorSkuCode
+            - VendorCode
+            - ProductCode
 
   - name: UnicommerceVendors
     description: This table provides list of all associated vendors and details about their accounts like gst number and contact details
@@ -136,4 +207,8 @@ models:
         unique_key : ['VendorCode']
         partition_by : { 'field': 'Updated', 'data_type': dbt.type_timestamp() }
         cluster_by : ['VendorCode']
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - VendorCode
 
